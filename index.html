@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dameon O. Thomas — Senior Sales Engineer & CX Solutions Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0E1A;
+      --bg2:       #0F1424;
+      --bg3:       #141929;
+      --panel:     #171D2E;
+      --border:    rgba(180,160,100,0.15);
+      --gold:      #C9A84C;
+      --gold-lt:   #E2C97A;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --slate:     #8A94AF;
+      --white:     #F0EDE6;
+      --white-dim: rgba(240,237,230,0.6);
+      --accent:    #2A6EBB;
+      --accent-lt: #4A8ED8;
+      --mono:      'DM Mono', monospace;
+      --serif:     'Cormorant Garamond', serif;
+      --sans:      'Outfit', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ──────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000;
+    }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 70% 40%, black 20%, transparent 80%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(42,110,187,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s ease forwards;
+    }
+
+    h1 span { color: var(--gold); font-weight: 600; }
+
+    .hero-title {
+      font-family: var(--sans);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--slate);
+      margin-bottom: 36px;
+      max-width: 580px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s ease forwards;
+    }
+
+    .hero-title strong { color: var(--white-dim); font-weight: 500; }
+
+    .hero-stats {
+      display: flex; gap: 48px; margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.65s ease forwards;
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-top: 4px;
+    }
+
+    .hero-cta {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s ease forwards;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+      border: 1px solid var(--gold);
+    }
+    .btn-primary:hover { background: var(--gold-lt); border-color: var(--gold-lt); transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* ── SECTION COMMON ─────────────────────────────────────── */
+    section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    h2 em { font-style: italic; color: var(--gold); }
+
+    .section-rule {
+      width: 48px; height: 2px;
+      background: var(--gold);
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────────── */
+    #about { border-top: 1px solid var(--border); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-body {
+      font-size: 1.05rem;
+      color: var(--white-dim);
+      line-height: 1.85;
+    }
+
+    .about-body p + p { margin-top: 20px; }
+
+    .about-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 28px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      color: var(--slate);
+      border-radius: 2px;
+      background: var(--gold-dim);
+      transition: all 0.2s;
+    }
+
+    .tag:hover { border-color: var(--gold); color: var(--gold); }
+
+    .about-sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    .info-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 20px 24px;
+      border-radius: 2px;
+    }
+
+    .info-card-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .info-card-value {
+      font-size: 0.95rem;
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    /* ── EXPERTISE ──────────────────────────────────────────── */
+    #expertise { background: var(--bg2); max-width: 100%; padding: 100px 48px; }
+
+    .expertise-inner { max-width: 1200px; margin: 0 auto; }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      margin-top: 48px;
+      border: 1px solid var(--border);
+    }
+
+    .expertise-card {
+      background: var(--panel);
+      padding: 36px 32px;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .expertise-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .expertise-card:hover { background: var(--bg3); }
+    .expertise-card:hover::before { transform: scaleX(1); }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .card-body {
+      font-size: 0.88rem;
+      color: var(--slate);
+      line-height: 1.75;
+    }
+
+    .card-pills {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 16px;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--gold);
+      border-radius: 2px;
+    }
+
+    /* ── PROJECT ────────────────────────────────────────────── */
+    #project { border-top: 1px solid var(--border); }
+
+    .project-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .project-screen {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .screen-bar {
+      background: var(--bg3);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FFBD2E; }
+    .dot-g { background: #28CA41; }
+
+    .screen-url {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--slate);
+      margin-left: 12px;
+    }
+
+    .screen-body {
+      padding: 24px;
+    }
+
+    .code-line {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.8;
+      color: var(--slate);
+    }
+
+    .code-line .kw  { color: #C792EA; }
+    .code-line .str { color: #C3E88D; }
+    .code-line .fn  { color: #82AAFF; }
+    .code-line .cm  { color: #546E7A; font-style: italic; }
+    .code-line .num { color: var(--gold); }
+
+    .project-content h3 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .project-content p {
+      color: var(--white-dim);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .tech-stack {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .tech {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 4px 12px;
+      border: 1px solid var(--accent);
+      color: var(--accent-lt);
+      border-radius: 2px;
+    }
+
+    /* ── NAROTEC ────────────────────────────────────────────── */
+    #narotec { background: var(--bg2); max-width: 100%; padding: 100px 48px; }
+    .narotec-inner { max-width: 1200px; margin: 0 auto; }
+
+    .narotec-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .service-list { display: flex; flex-direction: column; gap: 2px; margin-top: 32px; }
+
+    .service-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 20px 24px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .service-item:hover { border-color: var(--gold); }
+
+    .service-num {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: rgba(201,168,76,0.25);
+      min-width: 36px;
+      line-height: 1;
+      padding-top: 2px;
+    }
+
+    .service-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .service-text span {
+      font-size: 0.83rem;
+      color: var(--slate);
+    }
+
+    .narotec-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+    .badge {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 20px 24px;
+      border-radius: 2px;
+      text-align: center;
+    }
+
+    .badge-icon { font-size: 2rem; margin-bottom: 8px; }
+
+    .badge-text {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: 1.6;
+    }
+
+    /* ── CONTACT ────────────────────────────────────────────── */
+    #contact { border-top: 1px solid var(--border); text-align: center; }
+
+    #contact h2 { margin-bottom: 12px; }
+
+    .contact-sub {
+      font-size: 1rem;
+      color: var(--slate);
+      margin-bottom: 48px;
+      max-width: 480px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    .contact-links {
+      display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--white);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    .contact-link:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 100%;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--slate);
+    }
+
+    /* ── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      section, #expertise, #narotec { padding: 72px 24px; }
+      .hero { padding: 100px 24px 60px; }
+      .about-grid, .project-wrap, .narotec-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-stats { gap: 32px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero-stats { flex-wrap: wrap; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">D. Thomas</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#project">Project</a></li>
+      <li><a href="#narotec">NaroTec</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-eyebrow">Senior Sales Engineer &nbsp;·&nbsp; CX Solutions Architect</div>
+
+    <h1>Dameon<br /><span>O. Thomas</span></h1>
+
+    <p class="hero-title">
+      20+ years architecting and selling <strong>enterprise contact center</strong> and <strong>cloud communications</strong> platforms — bridging deep technical depth with executive-level business impact.
+    </p>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">20<span style="font-size:1.4rem;color:var(--slate)">+</span></div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">5K<span style="font-size:1.4rem;color:var(--slate)">+</span></div>
+        <div class="stat-label">Concurrent Agent Seats</div>
+      </div>
+      <div>
+        <div class="stat-num">50<span style="font-size:1.4rem;color:var(--slate)">+</span></div>
+        <div class="stat-label">Enterprise POCs Delivered</div>
+      </div>
+      <div>
+        <div class="stat-num">30<span style="font-size:1.4rem;color:var(--slate)">%</span></div>
+        <div class="stat-label">Incident Reduction</div>
+      </div>
+    </div>
+
+    <div class="hero-cta">
+      <a href="mailto:DameonThomas@gmail.com" class="btn btn-primary">↗ Get In Touch</a>
+      <a href="https://linkedin.com/in/dameonthomas" target="_blank" class="btn btn-secondary">LinkedIn</a>
+      <a href="#project" class="btn btn-secondary">View Project</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label reveal">About</div>
+    <h2 class="reveal">Engineering outcomes, <em>not just solutions</em></h2>
+    <div class="section-rule reveal"></div>
+    <div class="about-grid">
+      <div>
+        <div class="about-body reveal">
+          <p>I'm a Senior Sales Engineer and CX Solutions Architect based in Atlanta, GA, with over two decades of experience designing, deploying, and selling enterprise contact center platforms for Fortune 500 and regulated-industry clients.</p>
+          <p>My strength is the intersection of technical depth and business fluency — I can sit with a CISO and talk PCI DSS architecture in the morning, and deliver a tailored executive demo that closes a deal in the afternoon. I've worked across NICE Systems, Sitel/Foundever, Majorel/Teleperformance, and Revinate, consistently owning the full technical sales motion from discovery through contract execution.</p>
+          <p>I'm also the founder of NaroTec LLC, a minority-owned IT consulting firm pursuing federal and enterprise CX contracts, and an active builder — most recently shipping an AI-powered call transcript analyzer as a presales portfolio piece.</p>
+        </div>
+        <div class="about-tags reveal">
+          <span class="tag">NICE CXone</span>
+          <span class="tag">Amazon Connect</span>
+          <span class="tag">SIP / RTP / SBC</span>
+          <span class="tag">PCI DSS</span>
+          <span class="tag">Presales / SE</span>
+          <span class="tag">IVR / ACD Design</span>
+          <span class="tag">Python</span>
+          <span class="tag">React</span>
+          <span class="tag">Wireshark / PCAP</span>
+          <span class="tag">SOW Authoring</span>
+          <span class="tag">Dialogflow CX</span>
+          <span class="tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="about-sidebar reveal">
+        <div class="info-card">
+          <div class="info-card-label">Location</div>
+          <div class="info-card-value">Atlanta, GA</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Current Role</div>
+          <div class="info-card-value">Principal, NaroTec LLC</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Focus Areas</div>
+          <div class="info-card-value">Sales Engineering · Solutions Architecture · Forward Deployed Engineering</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Platform Depth</div>
+          <div class="info-card-value">NICE CXone · NICE Engage · Avaya · Cisco CUCM · Amazon Connect · Five9</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Compliance</div>
+          <div class="info-card-value">PCI DSS · CDE Segmentation · Regulated-Industry Architecture</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <div id="expertise">
+    <div class="expertise-inner">
+      <div class="section-label reveal">Core Expertise</div>
+      <h2 class="reveal">Where I add <em>value</em></h2>
+      <div class="section-rule reveal"></div>
+      <div class="expertise-grid reveal">
+
+        <div class="expertise-card">
+          <div class="card-icon">⚙️</div>
+          <div class="card-title">Presales Engineering</div>
+          <div class="card-body">Discovery-led solution design, POC leadership, RFP/RFI responses, and competitive positioning across complex multi-stakeholder deal cycles involving CTOs, CISOs, and procurement.</div>
+          <div class="card-pills">
+            <span class="pill">POC Builds</span>
+            <span class="pill">Demo Engineering</span>
+            <span class="pill">RFP Responses</span>
+            <span class="pill">Executive Briefings</span>
+          </div>
+        </div>
+
+        <div class="expertise-card">
+          <div class="card-icon">📞</div>
+          <div class="card-title">CX Platform Architecture</div>
+          <div class="card-body">End-to-end design of enterprise contact center platforms — IVR/ACD routing, omnichannel flows, high-availability SIP infrastructure, and multi-region failover strategies.</div>
+          <div class="card-pills">
+            <span class="pill">NICE CXone</span>
+            <span class="pill">Amazon Connect</span>
+            <span class="pill">IVR Design</span>
+            <span class="pill">Omnichannel</span>
+          </div>
+        </div>
+
+        <div class="expertise-card">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Compliance & Security</div>
+          <div class="card-body">PCI DSS-compliant architecture design across thousands of agent seats — call recording controls, CDE segmentation, TLS/SRTP encryption, IP restriction strategies, and audit-ready documentation.</div>
+          <div class="card-pills">
+            <span class="pill">PCI DSS</span>
+            <span class="pill">TLS / SRTP</span>
+            <span class="pill">CDE Segmentation</span>
+            <span class="pill">Audit Prep</span>
+          </div>
+        </div>
+
+        <div class="expertise-card">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">VoIP & SIP Infrastructure</div>
+          <div class="card-body">Deep SIP/RTP architecture expertise — SBC configuration, trunk design, PCAP/Wireshark analysis, call flow troubleshooting, and carrier integration validation.</div>
+          <div class="card-pills">
+            <span class="pill">SIP / RTP</span>
+            <span class="pill">Wireshark / PCAP</span>
+            <span class="pill">SBC Config</span>
+            <span class="pill">WebRTC</span>
+          </div>
+        </div>
+
+        <div class="expertise-card">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">AI & Conversational CX</div>
+          <div class="card-body">Conversational IVR design, NLU/NLP concepts, and AI-powered CX analytics — including Dialogflow CX, Google CCAI, Amazon Lex, and NICE Enlighten AI positioning.</div>
+          <div class="card-pills">
+            <span class="pill">Dialogflow CX</span>
+            <span class="pill">Google CCAI</span>
+            <span class="pill">Amazon Lex</span>
+            <span class="pill">NICE Enlighten</span>
+          </div>
+        </div>
+
+        <div class="expertise-card">
+          <div class="card-icon">🔗</div>
+          <div class="card-title">Integration & APIs</div>
+          <div class="card-body">CRM, WFM, and analytics integrations via REST APIs, OAuth 2.0, and webhooks — enabling real-time data flows, unified agent desktops, and consolidated cross-platform reporting.</div>
+          <div class="card-pills">
+            <span class="pill">REST APIs</span>
+            <span class="pill">OAuth 2.0</span>
+            <span class="pill">Salesforce</span>
+            <span class="pill">Python</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT -->
+  <section id="project">
+    <div class="section-label reveal">Featured Project</div>
+    <h2 class="reveal">AI Call Transcript <em>Analyzer</em></h2>
+    <div class="section-rule reveal"></div>
+    <div class="project-wrap">
+      <div class="project-screen reveal">
+        <div class="screen-bar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="screen-url">ai-transcript-analyzer</span>
+        </div>
+        <div class="screen-body">
+          <div class="code-line"><span class="cm">// AI-Powered CX Transcript Analyzer</span></div>
+          <div class="code-line"><span class="cm">// Built with React + Anthropic Claude API</span></div>
+          <div class="code-line">&nbsp;</div>
+          <div class="code-line"><span class="kw">const</span> analyzeTranscript = <span class="kw">async</span> (transcript) <span class="kw">=></span> {</div>
+          <div class="code-line">&nbsp; <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">anthropic.messages.create</span>({</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; model: <span class="str">"claude-sonnet-4-20250514"</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; messages: [{ role: <span class="str">"user"</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; content: <span class="fn">buildPrompt</span>(transcript) }]</div>
+          <div class="code-line">&nbsp; });</div>
+          <div class="code-line">&nbsp; <span class="kw">return</span> {</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; sentiment: response.<span class="fn">getSentiment</span>(),</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; topics: response.<span class="fn">extractTopics</span>(),</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; coachingFlags: response.<span class="fn">getCoachingNotes</span>(),</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp; score: response.<span class="fn">computeQA</span>() <span class="cm">// 0–100</span></div>
+          <div class="code-line">&nbsp; };</div>
+          <div class="code-line">};</div>
+        </div>
+      </div>
+      <div class="project-content reveal">
+        <h3>Demo-Ready Presales Artifact</h3>
+        <p>A fully functional AI-powered call transcript analyzer built to demonstrate real-world product sensibility alongside technical depth — exactly the kind of tool a Sales Engineer or Forward Deployed Engineer would build for a prospect POC.</p>
+        <p>The app ingests contact center call transcripts, runs them through the Claude API, and surfaces sentiment analysis, topic extraction, QA scoring, and agent coaching flags — all in a clean, client-presentable interface.</p>
+        <div class="tech-stack">
+          <span class="tech">React</span>
+          <span class="tech">Anthropic Claude API</span>
+          <span class="tech">JavaScript</span>
+          <span class="tech">REST / JSON</span>
+          <span class="tech">CX Domain Logic</span>
+        </div>
+        <a href="https://github.com/dameonthomas" target="_blank" class="btn btn-primary">View on GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAROTEC -->
+  <div id="narotec">
+    <div class="narotec-inner">
+      <div class="section-label reveal">NaroTec LLC</div>
+      <h2 class="reveal">Minority-owned IT consulting, <em>built to deliver</em></h2>
+      <div class="section-rule reveal"></div>
+      <div class="narotec-grid">
+        <div>
+          <p class="reveal" style="color:var(--white-dim);font-size:1rem;line-height:1.85;margin-bottom:32px;">
+            NaroTec LLC is an Atlanta-based, SAM.gov-registered, CAGE-coded minority-owned small business delivering enterprise CX solutions, federal IT consulting, and digital transformation services to BPO/contact centers, community banks, federal agencies, and automotive networks.
+          </p>
+          <div class="service-list reveal">
+            <div class="service-item">
+              <div class="service-num">01</div>
+              <div class="service-text"><strong>Technology Assessments</strong><span>Current-state analysis, gap identification, and roadmap development for enterprise CX and cloud environments.</span></div>
+            </div>
+            <div class="service-item">
+              <div class="service-num">02</div>
+              <div class="service-text"><strong>Digital Transformation</strong><span>Cloud migration strategy, omnichannel CX modernization, and AI-powered workflow automation.</span></div>
+            </div>
+            <div class="service-item">
+              <div class="service-num">03</div>
+              <div class="service-text"><strong>Infrastructure Deployment</strong><span>End-to-end platform implementation — SIP trunking, SBCs, cloud contact center, and systems integration.</span></div>
+            </div>
+            <div class="service-item">
+              <div class="service-num">04</div>
+              <div class="service-text"><strong>Security & Compliance</strong><span>PCI DSS architecture, CDE segmentation, regulated-environment deployments, and audit-ready documentation.</span></div>
+            </div>
+            <div class="service-item">
+              <div class="service-num">05</div>
+              <div class="service-text"><strong>Federal Contracting</strong><span>SAM.gov registered. Active pursuits include DLA/Robins AFB and state/local government technology supply.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="narotec-sidebar reveal">
+          <div class="badge">
+            <div class="badge-icon">🏛️</div>
+            <div class="badge-text">SAM.gov Registered<br />CAGE Code Certified</div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon">✊</div>
+            <div class="badge-text">Minority-Owned<br />Small Business</div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon">📍</div>
+            <div class="badge-text">Atlanta, GA<br />Serving Federal & Enterprise</div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon">🎖️</div>
+            <div class="badge-text">NICE CXone Certified<br />NICE Engage Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="reveal">Let's build something <em>together</em></h2>
+    <p class="contact-sub reveal">Open to Senior Sales Engineer, Solutions Architect, and Forward Deployed Engineer opportunities — as well as enterprise and federal consulting engagements through NaroTec LLC.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:DameonThomas@gmail.com" class="contact-link">✉ DameonThomas@gmail.com</a>
+      <a href="https://linkedin.com/in/dameonthomas" target="_blank" class="contact-link">in LinkedIn</a>
+      <a href="https://github.com/dameonthomas" target="_blank" class="contact-link">⌥ GitHub</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Dameon O. Thomas</div>
+    <div class="footer-copy">© 2026 · Atlanta, GA · NaroTec LLC</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
